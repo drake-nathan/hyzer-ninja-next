@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  email       String   @unique
+  paypal      String?
+  displayName String?
+  image       String?
+  location    String?
+  role        Role     @default(USER)
+  Disc        Disc[]
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model Disc {
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String
+  title       String
+  image       String
+  description String?
+  run         String?
+  brand       String
+  type        String
+  mold        String
+  weight      Int?
+  basePlastic String
+  subPlastic  String?
+  color       String?
+  stamp       String?
+  stampColor  String?
+  condition   Int
+  price       Int
+}
